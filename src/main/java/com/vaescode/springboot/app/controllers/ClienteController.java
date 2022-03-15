@@ -5,18 +5,20 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.vaescode.springboot.app.models.dao.IClienteDao;
 import com.vaescode.springboot.app.models.entity.Cliente;
 
 @Controller
+@SessionAttributes("cliente")
 public class ClienteController {
 
 	@Autowired
@@ -58,13 +60,14 @@ public class ClienteController {
 	}
 
 	@PostMapping("/form")
-	public String guardar(@Valid Cliente cliente, BindingResult result, Model model) {
+	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, SessionStatus status) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("titulo", "Formulario de clientes");
 			return "form";
 		}
 		clienteDao.save(cliente);
+		status.setComplete();
 		return "redirect:listar";
 	}
 
