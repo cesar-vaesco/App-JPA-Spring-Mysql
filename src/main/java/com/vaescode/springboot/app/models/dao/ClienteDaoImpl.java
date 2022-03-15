@@ -18,13 +18,12 @@ public class ClienteDaoImpl implements IClienteDao {
 	
 	
 	@Override
-	@Transactional(readOnly = true)
+
 	public Cliente findOne(Long id) {
 		return em.find(Cliente.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
 
 		return em.createQuery("from Cliente").getResultList();
@@ -33,7 +32,6 @@ public class ClienteDaoImpl implements IClienteDao {
 	
 	//Método safe sirve tanto para editar como para guardar
 	@Override
-	@Transactional
 	public void save(Cliente cliente) {
 
 		if (cliente.getId() != null && cliente.getId() > 0) {
@@ -46,7 +44,6 @@ public class ClienteDaoImpl implements IClienteDao {
 
 
 	@Override
-	@Transactional
 	public void delete(Long id) {
 		em.remove(findOne(id));
 
