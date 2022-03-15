@@ -15,6 +15,13 @@ public class ClienteDaoImpl implements IClienteDao {
 
 	@PersistenceContext
 	private EntityManager em;
+	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Cliente findOne(Long id) {
+		return em.find(Cliente.class, id);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
@@ -23,22 +30,26 @@ public class ClienteDaoImpl implements IClienteDao {
 		return em.createQuery("from Cliente").getResultList();
 	}
 
+	
+	//Método safe sirve tanto para editar como para guardar
 	@Override
 	@Transactional
 	public void save(Cliente cliente) {
 
 		if (cliente.getId() != null && cliente.getId() > 0) {
 			em.merge(cliente);
-		} else {			
+		} else {
 			em.persist(cliente);
 		}
 
 	}
 
-	@Override
-	public Cliente findOne(Long id) {
 
-		return em.find(Cliente.class, id);
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		em.remove(findOne(id));
+
 	}
 
 }
