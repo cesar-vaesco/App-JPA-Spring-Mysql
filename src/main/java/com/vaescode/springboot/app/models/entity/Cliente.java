@@ -22,7 +22,7 @@ public class Cliente implements Serializable {
 
 	private String nombre;
 	private String apellido;
-	private String correo;
+	private String email;
 
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE) // Como se guarda la fecha en la base de datos
@@ -52,12 +52,12 @@ public class Cliente implements Serializable {
 		this.apellido = apellido;
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Date getCreateAt() {
