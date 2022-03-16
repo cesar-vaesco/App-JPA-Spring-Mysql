@@ -30,10 +30,12 @@ public class ClienteController {
 	public String listar(Model model) {
 
 		model.addAttribute("titulo", "Listado de clientes");
-		model.addAttribute("cliente", clienteService.findAll());
+		model.addAttribute("clientes", clienteService.findAll()); //pasar lista a la vista
 
 		return "listar";
 	}
+	
+	
 
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
