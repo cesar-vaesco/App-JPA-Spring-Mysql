@@ -1,6 +1,7 @@
 package com.vaescode.springboot.app.controllers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,9 +13,13 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,23 +42,44 @@ import com.vaescode.springboot.app.util.paginator.PageRender;
 @SessionAttributes("cliente")
 public class ClienteController {
 
-	
 	private static final Logger log = LoggerFactory.getLogger(ClienteController.class);
 
-	
 	@Autowired
 	private IClienteService clienteService;
 
+	@GetMapping(value = "/uploads/{filename:.+}")
+	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
+
+		Path pathFoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+		log.info("pathfoto: " + pathFoto);
+
+		Resource recurso = null;
+
+		try {
+			recurso = new UrlResource(pathFoto.toUri());
+
+			if (!recurso.exists() && !recurso.isReadable()) {
+				throw new RuntimeException("Error: no se puede cargar la imagen: " + pathFoto.toString());
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment: filename=\"" + recurso.getFilename() + "\"")
+				.body(recurso);
+	}
+
 	@GetMapping("/ver/{id}")
-	public String ver(@PathVariable(value="id") Long id, Map<String, Object> model, RedirectAttributes flash) {
-		
+	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+
 		Cliente cliente = clienteService.findOne(id);
-		
-		if(cliente == null) {
-			flash.addFlashAttribute("erroe","el cliente no existe en la base de datos");
+
+		if (cliente == null) {
+			flash.addFlashAttribute("erroe", "el cliente no existe en la base de datos");
 			return "redirect:/listar";
 		}
-		
+
 		model.put("titulo", "Detalle cliente: " + cliente.getNombre());
 		model.put("cliente", cliente);
 		return "ver";
@@ -121,26 +147,23 @@ public class ClienteController {
 		}
 
 		if (!foto.isEmpty()) {
-			
-			
+
 			String uniqueFileName = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
 			log.info("uniqueFileName: " + uniqueFileName);
-			
+
 			Path rootPath = Paths.get("uploads").resolve(uniqueFileName);
 			log.info("rootPath: " + rootPath);
-			
+
 			Path rootAbsolutePath = rootPath.toAbsolutePath();
 			log.info("rootAbsolutePath: " + rootAbsolutePath);
-			
-			
+
 			try {
-				
+
 				Files.copy(foto.getInputStream(), rootAbsolutePath);
-				
+
 				flash.addFlashAttribute("info", "ha subido correctamente '" + foto.getOriginalFilename() + "'");
 				cliente.setFoto(uniqueFileName);
-				
-				
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
