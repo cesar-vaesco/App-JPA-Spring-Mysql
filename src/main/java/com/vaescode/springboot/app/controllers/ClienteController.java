@@ -114,8 +114,7 @@ public class ClienteController {
 		}
 
 		if (!foto.isEmpty()) {
-			Path directorioRecursos = Paths.get("src//main//resources//static//upload");
-			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			String rootPath = "C://Temp//uploads"; //directorio creado en el equipo
 			try {
 				byte[] bytes = foto.getBytes();
 				Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
