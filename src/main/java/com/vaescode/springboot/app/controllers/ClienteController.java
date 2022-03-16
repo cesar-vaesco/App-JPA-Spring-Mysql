@@ -37,6 +37,21 @@ public class ClienteController {
 	@Autowired
 	private IClienteService clienteService;
 
+	@GetMapping("/ver/{id}")
+	public String ver(@PathVariable(value="id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+		
+		Cliente cliente = clienteService.findOne(id);
+		
+		if(cliente == null) {
+			flash.addFlashAttribute("erroe","el cliente no existe en la base de datos");
+			return "redirect:/listar";
+		}
+		
+		model.put("titulo", "Detalle cliente: " + cliente.getNombre());
+		model.put("cliente", cliente);
+		return "ver";
+	}
+
 	/* listar */
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
@@ -105,7 +120,7 @@ public class ClienteController {
 				byte[] bytes = foto.getBytes();
 				Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
 				Files.write(rutaCompleta, bytes);
-				flash.addFlashAttribute("info", "ha subido correctamente '" + foto.getOriginalFilename()+ "'");
+				flash.addFlashAttribute("info", "ha subido correctamente '" + foto.getOriginalFilename() + "'");
 				cliente.setFoto(foto.getOriginalFilename());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
