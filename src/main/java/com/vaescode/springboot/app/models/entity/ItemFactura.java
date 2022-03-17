@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "facturas_item")
+@Table(name = "facturas_items")
 public class ItemFactura implements Serializable {
 
 	@Id
@@ -39,6 +39,14 @@ public class ItemFactura implements Serializable {
 
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 	public Double calcularImporte() {

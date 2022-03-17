@@ -25,9 +25,11 @@ import javax.persistence.TemporalType;
 public class Factura implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
+	
 	public String descripcion;
+	
 	public String observacion;
 
 	@Temporal(TemporalType.DATE)
@@ -36,6 +38,7 @@ public class Factura implements Serializable {
 
 	// Relación: muchas facturas - un cliente -> carga lenta()
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="cliente_id")
 	public Cliente cliente;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

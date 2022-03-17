@@ -20,7 +20,9 @@ public class Producto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
+	
 	public String nombre;
+	
 	public Double precio;
 	
 	@Temporal(TemporalType.DATE)

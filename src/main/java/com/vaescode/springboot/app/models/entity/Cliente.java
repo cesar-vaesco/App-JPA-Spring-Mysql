@@ -50,7 +50,7 @@ public class Cliente implements Serializable {
 
 	// factuaras mapeadas a cliente - relación: un cliente a muchas facturas - carga
 	// lenta - afectar las operaciones relacionadas al campo
-	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Factura> facturas;
 
 	// Constructor
