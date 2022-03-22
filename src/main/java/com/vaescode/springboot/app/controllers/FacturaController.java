@@ -37,6 +37,22 @@ public class FacturaController {
 	@Autowired
 	private IClienteService clienteService;
 
+	@GetMapping("/ver/{id}")
+	public String verFactura(@PathVariable(name = "id") Long id, Model model, RedirectAttributes flash) {
+
+		Factura factura = clienteService.findFacturaById(id);
+
+		if (factura == null) {
+			flash.addFlashAttribute("error", "La factura no existe en la base de datos");
+			return "redirect:/listar";
+		}
+
+		model.addAttribute("titulo", "factura: ".concat(factura.getDescripcion()));
+		model.addAttribute("factura", factura);
+
+		return "factura/ver";
+	}
+
 	// http://localhost:8080/factura/form/{clienteId}
 	@GetMapping("/form/{clienteId}")
 	public String crear(@PathVariable(value = "clienteId") Long clienteId, Map<String, Object> model,
@@ -78,11 +94,11 @@ public class FacturaController {
 			model.addAttribute("titulo", "crear factura");
 			return "factura/form";
 		}
-		
-		if(itemId == null || itemId.length == 0) {
+
+		if (itemId == null || itemId.length == 0) {
 			model.addAttribute("titulo", "crear factura");
 			model.addAttribute("error", "Error: la factura NO puede no tener líneas");
-			
+
 			return "factura/form";
 		}
 
