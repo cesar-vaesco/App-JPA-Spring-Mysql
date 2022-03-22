@@ -5,19 +5,26 @@
 	<table th:fragment="itemsFactura" class="d-none">
 
 		<tbody id="plantillaItemsFactura">
-		
-			<tr id="row_{ID}"> <!-- Valor del id del producto -->
-			
+
+			<tr id="row_{ID}">
+				<!-- Valor del id del producto -->
+
 				<td class="d-none"><input type="hidden" value="{ID}"
-					name="item_id[]" /></td>  <!-- El id se oculta a la vista  -->
-					
+					name="item_id[]" /></td>
+				<!-- El id se oculta a la vista  -->
+
 				<td>{NOMBRE}</td>
-				<td>{PRECIO}</td> <!-- Los valor de nombre y producto se rellenan con un valor real con el autocomplete  -->
-				
+				<td>{PRECIO}</td>
+				<!-- Los valor de nombre y producto se rellenan con un valor real con el autocomplete  -->
+
 				<td><input type="number" value="1" name="cantidad[]"
 					id="cantidad_{ID}" class="form-control col-sm-4"
 					onchange="itemsHelper.calcularImporte({ID}, {PRECIO}, this.value);" /></td>
+				<!-- this.value toma el valor que se incrementa en el formulario al momento de agregar items en la plantilla -->
+
+				<!-- la suma del total de los items que integran la factura -->
 				<td><span id="total_importe_{ID}">0</span></td>
+
 				<td><a href="#" class="btn btn-danger btn-sm"
 					onclick="itemsHelper.eliminarLineaFactura({ID});">x</a></td>
 			</tr>
