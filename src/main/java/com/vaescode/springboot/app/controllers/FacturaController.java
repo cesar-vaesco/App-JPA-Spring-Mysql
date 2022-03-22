@@ -3,10 +3,14 @@ package com.vaescode.springboot.app.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,11 +69,22 @@ public class FacturaController {
 	}
 
 	@PostMapping("/form")
-	public String guardar(Factura factura, 
-						  @RequestParam(name = "item_id[]", required = false) Long[] itemId,
-						  @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad, 
-						  RedirectAttributes flash,
-						  SessionStatus status) {
+	public String guardar(@Valid Factura factura, BindingResult result, Model model,
+			@RequestParam(name = "item_id[]", required = false) Long[] itemId,
+			@RequestParam(name = "cantidad[]", required = false) Integer[] cantidad, RedirectAttributes flash,
+			SessionStatus status) {
+
+		if (result.hasErrors()) {
+			model.addAttribute("titulo", "crear factura");
+			return "factura/form";
+		}
+		
+		if(itemId == null || itemId.length == 0) {
+			model.addAttribute("titulo", "crear factura");
+			model.addAttribute("error", "Error: la factura NO puede no tener líneas");
+			
+			return "factura/form";
+		}
 
 		for (int i = 0; i < itemId.length; i++) {
 			Producto producto = clienteService.findProductoById(itemId[i]);
@@ -83,11 +98,11 @@ public class FacturaController {
 			log.info("Id: " + itemId[i].toString() + ", cantidad: " + cantidad);
 
 		}
-		
+
 		clienteService.saveFactura(factura);
-		
+
 		status.setComplete();
-		
+
 		flash.addFlashAttribute("sucess", "Factura creada con éxito!");
 
 		return "redirect:/ver/" + factura.getCliente().getId();
