@@ -72,8 +72,9 @@
 
 					<table th:replace = "factura/plantilla-items :: itemsFactura"></table>
 					<!--Tabla donde se muestran los productos -->
-					<table id="cargarItemProductos"
+					<table id="cargarItemProductos" 
 						class="table table-sm table-striped table-hover">
+					<!-- id="cargarItemProductos"  es referencia para que jquery cargue los productos -->	
 						<thead>
 							<tr>
 								<th>Nombre</th>
@@ -84,6 +85,7 @@
 							</tr>
 						</thead>
 						<tbody>
+						<!-- Aquí se cargan las líneas de la factura -->
 						</tbody>
 					</table>
 					<h5>
