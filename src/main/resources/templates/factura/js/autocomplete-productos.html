@@ -45,6 +45,11 @@
 					itemsHelper.calcularImporte(ui.item.value, ui.item.precio, 1);
 				}
 			});
+			
+				$("form").submit(function(){
+				$("#plantillaItemsFactura").remove();
+				return;
+			});
 		});
 		
 		var itemsHelper = {
