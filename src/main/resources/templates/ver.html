@@ -8,8 +8,16 @@
 	<div class="container py-4">
 
 		<div class="card bg-light">
-			<div class="card-header bg-primary text-white font-weight-bold" th:text=" ${titulo}"></div>
+			<div class="card-header bg-primary text-white font-weight-bold"
+				th:text=" ${titulo}"></div>
 			<div class="card-body">
+
+				<h4 class="card-title">
+					<a class="btn btn-primary btn-sm"
+						th:href="@{'/factura/form/' + ${cliente.id}}"
+						th:text="'crear factura'"></a>
+				</h4> <!-- Botón para crear factura  -->
+
 				<img th:if="${#strings.length(cliente.foto) > 0}"
 					class="img-thumbnail rounded float-left mr-1"
 					style="max-width: 25%;" th:src="@{'/uploads/' + ${cliente.foto}}"
