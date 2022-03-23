@@ -118,6 +118,11 @@ public class Cliente implements Serializable {
 		facturas.add(factura);
 	}
 
+	@Override
+	public String toString() {
+		return "Cliente: " + nombre + " " + apellido ;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }
