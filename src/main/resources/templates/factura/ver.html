@@ -15,7 +15,7 @@
 				<!-- Volver al detalle del cliente -->
 				<h4 class="card-title">
 					<a th:href="@{'/ver/' + ${factura.cliente.id}}"
-						class="btn btn-light btn-xs">&laquo; volver</a>
+						class="btn btn-outline-info btn-sm">&laquo; volver</a>
 				</h4>
 
 				<!-- Datos del cliente -->
@@ -36,6 +36,8 @@
 					<li class="list-group-item"
 						th:text="'Fecha: ' + ${factura.createAt}"></li>
 				</ul>
+
+				<!-- Datos de las líneas que integra la factura -->
 				<div class="alert alert-info my-4"
 					th:if="${#lists.isEmpty(factura.items)}"
 					th:text="'No hay l�neas para la factura' + ${factura.descripcion}"></div>
@@ -60,17 +62,20 @@
 					</tbody>
 
 				</table>
-
+				<!--Mostrar el total de de la compra  -->
 				<h5 class="float-right">
 					Gran Total <span th:text="${factura.total}"
 						class="badge badge-secondary"></span>
 				</h5>
 
+				<!--Mostrar las observaciones de la compra  -->
 				<div class="card border-info mb-4" style="max-width: 20rem;">
 					<div class="card-header">Observaciones</div>
 					<div class="card-body">
+						<!--En caso de haber observación  -->
 						<p class="card-text" th:text="${factura.observacion}"
 							th:if="${not #strings.isEmpty(factura.observacion)}"></p>
+						<!--De haber observación  -->
 						<h4 class="card-title"
 							th:if="${#strings.isEmpty(factura.observacion)}"
 							th:text="'No tiene observaciones'"></h4>
@@ -78,7 +83,7 @@
 				</div>
 
 				<a th:href="@{'/ver/' + ${factura.cliente.id}}"
-					class="btn btn-light btn-xs">&laquo; volver</a>
+					class="btn btn-outline-info btn-sm">&laquo; volver</a>
 
 			</div>
 		</div>
