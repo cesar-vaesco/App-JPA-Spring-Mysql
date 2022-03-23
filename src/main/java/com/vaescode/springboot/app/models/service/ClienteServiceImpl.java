@@ -39,6 +39,13 @@ public class ClienteServiceImpl implements IClienteService {
 		return clienteDao.findById(id).orElse(null);
 	}
 
+	/*Query optimizada*/
+	@Override
+	@Transactional(readOnly = true)
+	public Cliente fetchByIdWithFacturas(Long id) {
+		return clienteDao.fetchByIdWithFacturas(id);
+	}
+
 	@Override
 	@Transactional
 	public void save(Cliente cliente) {
@@ -53,6 +60,7 @@ public class ClienteServiceImpl implements IClienteService {
 
 	}
 
+	/* Paginador */
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Cliente> findAll(Pageable pageable) {
