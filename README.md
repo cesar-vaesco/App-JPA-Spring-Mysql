@@ -7,7 +7,12 @@ Al agregar las dependencias de forma automatica nuestra aplicación va a cintar 
 * Dependencias:
     - thymeleaf-extras-springsecurity5
     - spring-boot-starter-security
-
+    <br/>
+* Configurar la clase SpringSecurityConfig
+	- En raíz de proyecto
+	- Se habilita perfil y permisos para el perfil habilitado
+	
+	
 ### Paginador 
 
 Pasos:
