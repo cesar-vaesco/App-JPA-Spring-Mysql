@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +39,8 @@ import com.vaescode.springboot.app.util.paginator.PageRender;
 @Controller
 @SessionAttributes("cliente")
 public class ClienteController {
+
+	private static final Logger logger = LoggerFactory.getLogger(ClienteController.class);
 
 	@Autowired
 	private IClienteService clienteService;
@@ -63,7 +69,7 @@ public class ClienteController {
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
 		// Cliente cliente = clienteService.findOne(id);
-		/*Optimización de consulta*/
+		/* Optimización de consulta */
 		Cliente cliente = clienteService.fetchByIdWithFacturas(id);
 		if (cliente == null) {
 			flash.addFlashAttribute("erroe", "el cliente no existe en la base de datos");
@@ -76,8 +82,21 @@ public class ClienteController {
 	}
 
 	/* listar */
-	@RequestMapping(value = {"/listar","/"}, method = RequestMethod.GET)
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
+			Authentication authentication) {
+
+		if (authentication != null) {
+			logger.info("Hola usuario authenticado, tu nombre es: ".concat(authentication.getName()));
+		}
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth != null) {
+			logger.info(
+					"Usuario autenticado utilizando forma estatíca SecurityContextHolder.getContext().getAuthentication(): "
+							.concat(auth.getName()));
+		}
 
 		Pageable pageRequest = PageRequest.of(page, 4); // cantidad registros a mostrar por página
 
