@@ -27,6 +27,9 @@
 
 			<!-- Submit -->
 			<button type="submit" class="btn mt-3 btn-block" value="Sign In">Login</button>
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}" />
+
 		</form>
 		<!--  
 		<div class="text-center fs-6">
