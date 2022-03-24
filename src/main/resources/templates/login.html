@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="wrapper">
+		<div class="logo">
+			<img th:src="@{/images/spring.png}" alt="Spring logo" />
+		</div>
+		<div class="text-center mt-4 name">Por favor Sign In!</div>
+
+		<form class="p-3 mt-3" th:action="@{/login}" method="post">
+
+			<!-- Usuario -->
+			<div class="form-field d-flex align-items-center">
+				<span class="far fa-user"></span> <input type="text" name="username"
+					id="username" placeholder="Username" autofocus required>
+			</div>
+
+			<!-- contraseña -->
+			<div class="form-field d-flex align-items-center">
+				<span class="fas fa-key"></span> <input type="password"
+					name="password" id="password" placeholder="Password">
+			</div>
+
+			<!-- Submit -->
+			<button type="submit" class="btn mt-3 btn-block" value="Sign In">Login</button>
+		</form>
+		<!--  
+		<div class="text-center fs-6">
+			<a href="#">Forget password?</a> or <a href="#">Sign up</a>
+		</div>
+		 -->
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
