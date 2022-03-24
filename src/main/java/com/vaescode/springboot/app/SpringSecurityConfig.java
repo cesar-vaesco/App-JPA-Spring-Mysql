@@ -22,12 +22,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	/* ACL - Listas de control de acceso - peemisos para acceder a las vistas */
+	/* http://localhost:8080/login */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar*").permitAll()
-				.antMatchers("/ver/**").hasAnyRole("USER").antMatchers("/uploads/**").hasAnyRole("USER")
-				.antMatchers("/form/**").hasAnyRole("ADMIN").antMatchers("/eliminar/**").hasAnyRole("ADMIN")
-				.antMatchers("/factura/**").hasAnyRole("ADMIN").anyRequest().authenticated();
+				.antMatchers("/ver/**").hasAnyRole("USER")
+				.antMatchers("/uploads/**").hasAnyRole("USER")
+				.antMatchers("/form/**").hasAnyRole("ADMIN")
+				.antMatchers("/eliminar/**").hasAnyRole("ADMIN")
+				.antMatchers("/factura/**").hasAnyRole("ADMIN")
+				.anyRequest().authenticated()
+				.and().formLogin().permitAll() 
+				.and().logout().permitAll();
 	}
 
 	@Autowired
