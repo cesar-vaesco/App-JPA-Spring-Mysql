@@ -17,23 +17,22 @@ body {
 	font-family: 'Poppins', sans-serif
 }
 
-body {
-	background: #ecf0f3
-}
+
 
 .wrapper {
 	max-width: 350px;
-	min-height: 500px;
-	margin: 80px auto;
+	min-height: 400px;
+	margin: 40px auto;
 	padding: 40px 30px 30px 30px;
 	background-color: #ecf0f3;
 	border-radius: 15px;
-	box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff
+	box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+
 }
 
 .logo {
 	width: 80px;
-	margin: auto
+	margin: auto;
 }
 
 .logo img {
@@ -87,7 +86,7 @@ body {
 }
 
 .wrapper .btn:hover {
-	background-color: #039BE5
+	background-color: #039BE5;
 }
 
 .wrapper a {
