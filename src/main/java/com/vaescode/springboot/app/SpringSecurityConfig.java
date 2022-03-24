@@ -11,10 +11,15 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.vaescode.springboot.app.auth.handler.LoginSuccesHandler;
+
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// public static BCryptPasswordEncoder
+	
+	@Autowired
+	private LoginSuccesHandler succesHandler;
 
 	@Bean
 	public static BCryptPasswordEncoder passwordEncoder() {
@@ -33,7 +38,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/factura/**").hasAnyRole("ADMIN")
 				.anyRequest().authenticated()
 				.and()
-					.formLogin().loginPage("/login")
+					.formLogin()
+					.successHandler(succesHandler)
+					.loginPage("/login")
 					.permitAll() 
 				.and()
 				.logout().permitAll()

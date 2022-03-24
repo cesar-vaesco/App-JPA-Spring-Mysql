@@ -6,10 +6,9 @@
 	<header th:replace="layout/layout :: header"></header>
 
 	<div class="wrapper">
-		<div class="logo">
-			<img th:src="@{/images/spring.png}" alt="Spring logo" />
-		</div>
-		<div class="text-center mt-4 name">Sign In!</div>
+
+				<h3 class="text-center name">Sign In!</h3>
+		
 
 		<form class="p-3 mt-3" th:action="@{/login}" method="post">
 

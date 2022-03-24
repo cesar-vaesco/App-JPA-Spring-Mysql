@@ -17,17 +17,16 @@ body {
 	font-family: 'Poppins', sans-serif
 }
 
-
-
 .wrapper {
 	max-width: 350px;
-	min-height: 400px;
-	margin: 40px auto;
+	/*min-height: 400px;*/
+	margin : 40px auto;
 	padding: 40px 30px 30px 30px;
 	background-color: #ecf0f3;
 	border-radius: 15px;
 	box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
-
+	margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .logo {
