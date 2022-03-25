@@ -1,5 +1,7 @@
 package com.vaescode.springboot.app;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,6 +26,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private LoginSuccesHandler succesHandler;
+	
+	@Autowired
+	private DataSource dataSource;
 
 	
 
@@ -52,12 +57,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
-		PasswordEncoder encoder = passwordEncoder;
-		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
-
-		builder.inMemoryAuthentication().withUser(users.username("admin").password("12345").roles("ADMIN", "USER"))
-				.withUser(users.username("cesar").password("12345").roles("USER"));
-
+		
+		
+		builder.jdbcAuthentication()
+		.dataSource(dataSource)
+		.passwordEncoder(passwordEncoder)
+		.usersByUsernameQuery("select  username, password, enabled from users where username =?")
+		.authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id=u.id) where u.username=? ");
+		
+		//◦insert into authorities (user_id, authority) values(1, 'ROLE_USER');
+		
+		/*
+		 * PasswordEncoder encoder = passwordEncoder; UserBuilder users =
+		 * User.builder().passwordEncoder(encoder::encode);
+		 * 
+		 * builder.inMemoryAuthentication().withUser(users.username("admin").password(
+		 * "12345").roles("ADMIN", "USER"))
+		 * .withUser(users.username("cesar").password("12345").roles("USER"));
+		 */
 		/*
 		 * UserBuilder users = User.builder().passwordEncoder(password -> { return
 		 * encoder.encode(password); });
