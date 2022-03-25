@@ -1,19 +1,15 @@
 package com.vaescode.springboot.app;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaescode.springboot.app.auth.handler.LoginSuccesHandler;
+import com.vaescode.springboot.app.models.service.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
@@ -27,8 +23,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private LoginSuccesHandler succesHandler;
 	
+	/*
+	 * @Autowired private DataSource dataSource;
+	 */
+	
 	@Autowired
-	private DataSource dataSource;
+	private JpaUserDetailsService userDetailsService;
 
 	
 
@@ -58,13 +58,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
 		
+		builder.userDetailsService(userDetailsService)
+		.passwordEncoder(passwordEncoder);
 		
-		builder.jdbcAuthentication()
-		.dataSource(dataSource)
-		.passwordEncoder(passwordEncoder)
-		.usersByUsernameQuery("select  username, password, enabled from users where username =?")
-		.authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id=u.id) where u.username=? ");
 		
+		
+		// Con JDBC
+		/*
+		 * builder.jdbcAuthentication() .dataSource(dataSource)
+		 * .passwordEncoder(passwordEncoder)
+		 * .usersByUsernameQuery("select  username, password, enabled from users where username =?"
+		 * )
+		 * .authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id=u.id) where u.username=? "
+		 * );
+		 */
 		//◦insert into authorities (user_id, authority) values(1, 'ROLE_USER');
 		
 		/*
