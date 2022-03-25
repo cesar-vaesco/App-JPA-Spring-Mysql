@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -54,6 +55,7 @@ public class ClienteController {
 	@Autowired
 	private IUploadFileService uploadFileService;
 
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
@@ -71,6 +73,7 @@ public class ClienteController {
 				.body(recurso);
 	}
 
+	@Secured("ROLE_USER")
 	@GetMapping("/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
@@ -104,28 +107,30 @@ public class ClienteController {
 							.concat(auth.getName()));
 		}
 
-		
-		/*Tres formas de identificar el tipo de ROLE que tiene el usuario*/
+		/* Tres formas de identificar el tipo de ROLE que tiene el usuario */
 		if (hasRole("ROLE_ADMIN")) {
 			logger.info("Hola ".concat(auth.getName()).concat(" tienes acceso!"));
 		} else {
 			logger.info("Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
 		}
-		
-		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request, "");
-		
-		if(securityContext.isUserInRole("ROLE_ADMIN")) {
-			logger.info("Forma usando SecurityContextHolderAwareRequestWrapper: Hola ".concat(auth.getName()).concat(" tienes acceso!"));
-	
-		}else {
-			logger.info("Forma usando SecurityContextHolderAwareRequestWrapper: Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
+
+		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
+				"");
+
+		if (securityContext.isUserInRole("ROLE_ADMIN")) {
+			logger.info("Forma usando SecurityContextHolderAwareRequestWrapper: Hola ".concat(auth.getName())
+					.concat(" tienes acceso!"));
+
+		} else {
+			logger.info("Forma usando SecurityContextHolderAwareRequestWrapper: Hola ".concat(auth.getName())
+					.concat(" NO tienes acceso!"));
 		}
-		
-		if(request.isUserInRole("ROLE_ADMIN")) {
+
+		if (request.isUserInRole("ROLE_ADMIN")) {
 			logger.info("Forma usando HttpServletRequest: Hola ".concat(auth.getName()).concat(" tienes acceso!"));
 		} else {
 			logger.info("Forma usando HttpServletRequest: Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
-		}	
+		}
 
 		Pageable pageRequest = PageRequest.of(page, 4); // cantidad registros a mostrar por página
 
@@ -141,6 +146,7 @@ public class ClienteController {
 	}
 
 	/* crear registro de cliente */
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
 
@@ -151,6 +157,7 @@ public class ClienteController {
 	}
 
 	/* editar registro de cliente */
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
@@ -214,6 +221,7 @@ public class ClienteController {
 	}
 
 	/* Eliminar registro de cliente */
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
