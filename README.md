@@ -1,6 +1,40 @@
 # Getting Started
 
 
+### Spring security db-JDBC autorización
+
+- Tablas para almacenar los perfiles de autorización
+
+CREATE TABLE `db_springboot`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
+  
+CREATE TABLE `db_springboot`.`authorities` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `authority` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `user_id_authority_unique` (`user_id` ASC, `authority` ASC) VISIBLE,
+  CONSTRAINT `fk_auhtorities_users`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `db_springboot`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+    
+ - Creando usuarios - las constraseñas es la encriptacion de una cadena de caracteres recuperada de los logs de spring <br/><br/>
+ 
+    - insert into users(username, password, enabled) Values ('cesar','$2a$10$LQ5H5KcEwWjMtx9H0/loLe/BbubKkD3gs3bt0NVUytDFh8Mz6RJ0K', 1);
+    - insert into users(username, password, enabled) Values ('admin','$2a$10$nsMER4SnQQaodR.JZlPK3.5y7X7EAqFcPvbunl62FPjeMWJVJTSHS', 1);  
+    
+- Asignación de roles a un usuario <br/><br/>    
+    - insert into authorities (user_id, authority) values(1, 'ROLE_USER');
+    - insert into authorities (user_id, authority) values(2, 'ROLE_ADMIN');
+    - insert into authorities (user_id, authority) values(2, 'ROLE_USER');
+
 ### Spring security
 
 Al agregar las dependencias de forma automatica nuestra aplicación va a cintar con una página de acceso(login)
