@@ -48,7 +48,7 @@ INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(3, 2, 6);
 insert into users(username, password, enabled) Values ('cesar','$2a$10$LQ5H5KcEwWjMtx9H0/loLe/BbubKkD3gs3bt0NVUytDFh8Mz6RJ0K', 1);
 insert into users(username, password, enabled) Values ('admin','$2a$10$nsMER4SnQQaodR.JZlPK3.5y7X7EAqFcPvbunl62FPjeMWJVJTSHS', 1);  
     
--- - Asignación de autorización roles a un usuario   
+/*Asignación de autorización roles a un usuario   */
 insert into authorities (user_id, authority) values(1, 'ROLE_USER');
 insert into authorities (user_id, authority) values(2, 'ROLE_ADMIN');
 insert into authorities (user_id, authority) values(2, 'ROLE_USER');
