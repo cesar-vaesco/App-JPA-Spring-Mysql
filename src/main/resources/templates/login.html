@@ -7,7 +7,7 @@
 
 	<div class="wrapper">
 
-				<h3 class="text-center name">Sign In!</h3>
+				<h3 class="text-center name" th:text="#{text.login.titulo}">Sign In!</h3>
 		
 
 		<form class="p-3 mt-3" th:action="@{/login}" method="post">
@@ -15,18 +15,18 @@
 			<!-- Usuario -->
 			<div class="form-field d-flex align-items-center">
 				<span class="far fa-user"></span> <input type="text" name="username"
-					id="username" placeholder="Username" autofocus required>
+					id="username" th:placeholder="#{text.login.username}" autofocus required>
 			</div>
 
 			<!-- contraseña -->
 			<div class="form-field d-flex align-items-center">
 				<span class="fas fa-key"></span> <input type="password"
-					name="password" id="password" placeholder="Password">
+					name="password" id="password" th:placeholder="#{text.login.password}">
 			</div>
 
 			<!-- Submit -->
-			<button type="submit" class="btn mt-3 btn-block" value="Sign In">Login</button>
-			<input type="hidden" th:name="${_csrf.parameterName}"
+			<button type="submit" class="btn mt-3 btn-block" th:value="#{text.login.boton}">Login</button>
+			<input type="hidden" th:name="${_csrf.parameterName}" 
 				th:value="${_csrf.token}" />
 
 		</form>

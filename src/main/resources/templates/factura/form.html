@@ -6,93 +6,71 @@
 	<header th:replace="layout/layout :: header"></header>
 
 	<div class="container py-4">
-		<!-- Contenedor principal -->
-		<!--  -->
-
 		<div class="card bg-light">
-			<!--Contenedor de la tarjeta  -->
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
-				<!--Contenedor del cuerpo de la tarjeta  -->
-
 				<h4 class="card-title">
-					<!-- Botón para regresar a http://localhost:8080/ver/id detalle del cliente -->
-					<a class="btn btn-light"
+					<a class="btn btn-light btn-xs"
 						th:href="@{'/ver/' + ${factura.cliente.id}}"
-						th:text="'&laquo; volver'"></a>
+						th:utext="#{text.global.volver}"></a>
 				</h4>
 
-				<!-- Formulario de factura -->
 				<form th:action="@{/factura/form/}" th:object="${factura}"
 					method="post">
 
 					<div class="form-group row">
-						<!--Campos del formulario  -->
 						<label for="cliente" class="col-sm-2 col-form-label"
-							th:text="'Cliente'"></label>
+							th:text="#{text.factura.form.cliente}"></label>
 						<div class="col-sm-6">
 							<input name="cliente"
 								th:value="${factura.cliente.nombre} + ' ' + ${factura.cliente.apellido}"
 								class="form-control" disabled='disabled' />
-							<!-- Para mostrar los datos del cliente en la factura -->
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<!--Campos del formulario  -->
 						<label for="descripcion" class="col-sm-2 col-form-label"
-							th:text="'Descripción'"></label>
+							th:text="#{text.cliente.factura.descripcion}"></label>
 						<div class="col-sm-6">
-							<input type="text" th:field="*{descripcion}" class="form-control"
-								th:errorclass="'form-control is-invalid'" />
-							<div class="invalid-feedback"
-								th:if="${#fields.hasErrors('descripcion')}"
-								th:errors="*{descripcion}"></div>
+							<input type="text" th:field="*{descripcion}" class="form-control" th:errorclass="'form-control is-invalid'" />
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<!--Campos del formulario  -->
 						<label for="observacion" class="col-sm-2 col-form-label"
-							th:text="'Observación'"></label>
+							th:text="#{text.factura.form.observacion}"></label>
 						<div class="col-sm-6">
 							<textarea th:field="*{observacion}" class="form-control"></textarea>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<!--Campos del formulario  -->
 						<label for="buscar_producto" class="col-sm-2 col-form-label"
-							th:text="'Buscar producto'"></label>
+							th:text="#{text.factura.form.buscar}"></label>
 						<div class="col-sm-6">
 							<input type="text" name="buscar_producto" id="buscar_producto"
 								class="form-control" />
 						</div>
 					</div>
 
-					<table th:replace = "factura/plantilla-items :: itemsFactura"></table>
-					<!--Tabla donde se muestran los productos -->
-					<table id="cargarItemProductos" 
+					<table th:replace="factura/plantilla-items :: itemsFactura"></table>
+
+					<table id="cargarItemProductos"
 						class="table table-sm table-striped table-hover">
-					<!-- id="cargarItemProductos"  es referencia para que jquery cargue los productos -->	
 						<thead>
 							<tr>
-								<th>Nombre</th>
-								<th>Precio</th>
-								<th>Cantidad</th>
-								<th>Total</th>
-								<th>Eliminar</th>
+								<th th:text="#{text.factura.form.item.nombre}">Nombre</th>
+								<th th:text="#{text.factura.form.item.precio}">Precio</th>
+								<th th:text="#{text.factura.form.item.cantidad}">Cantidad</th>
+								<th th:text="#{text.factura.form.item.total}">Total</th>
+								<th th:text="#{text.factura.form.item.eliminar}">Eliminar</th>
 							</tr>
 						</thead>
 						<tbody>
-						<!-- Aquí se cargan las líneas de la factura -->
 						</tbody>
 					</table>
-					
-					<!-- Calculando el total de todas las líneas de la factura -->
-					<h5>
-						Total <span class="badge badge-secondary" id="gran_total">0</span>
-					</h5>
+					<h5><span th:text="#{text.factura.form.total}">Total</span> <span class="badge badge-secondary" id="gran_total">0</span></h5>
 
 					<div class="form-group row">
 						<div class="col-sm-6">
@@ -106,7 +84,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<footer th:replace="layout/layout :: footer"></footer>
 	<script th:replace="factura/js/autocomplete-productos :: javascript"></script>
