@@ -25,15 +25,17 @@ public class FacturaPdfView extends AbstractPdfView {
 
 		PdfPTable tabla = new PdfPTable(1); // Numeros de columnas
 		/* Agregando las filas que integran el documento */
+		tabla.setSpacingAfter(20);
 		tabla.addCell("Datos del cliente");
-		tabla.addCell(factura.getCliente().getNombre() + " " + factura.getCliente().getNombre());
+		tabla.addCell(factura.getCliente().getNombre() + " " + factura.getCliente().getApellido());
 		tabla.addCell(factura.getCliente().getEmail());
 
 		PdfPTable tabla2 = new PdfPTable(1); // Numeros de columnas
-		tabla.addCell("Datos de la factura");
-		tabla.addCell("Folio: " + factura.getId());
-		tabla.addCell("Descripción: " + factura.getDescripcion());
-		tabla.addCell("Fecha: " + factura.getCreateAt());
+		tabla2.setSpacingAfter(20);
+		tabla2.addCell("Datos de la factura");
+		tabla2.addCell("Folio: " + factura.getId());
+		tabla2.addCell("Descripción: " + factura.getDescripcion());
+		tabla2.addCell("Fecha: " + factura.getCreateAt());
 
 		document.add(tabla);
 		document.add(tabla2);
