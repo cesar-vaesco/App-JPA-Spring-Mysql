@@ -1,5 +1,9 @@
 # Getting Started
 
+### Docuemntos CVS se ven por defecto como archivos de excel
+
+
+
 ### Ejemplos de estilos en excel
 https://poi.apache.org/components/spreadsheet/examples.html
 
