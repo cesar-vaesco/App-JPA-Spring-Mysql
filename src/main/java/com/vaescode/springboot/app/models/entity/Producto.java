@@ -19,15 +19,15 @@ public class Producto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
+	private Long id;
 	
-	public String nombre;
+	private String nombre;
 	
-	public Double precio;
+	private Double precio;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")
-	public Date createAt;
+	private Date createAt;
 	
 	@PrePersist 
 	public void prePersist() {

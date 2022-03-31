@@ -7,23 +7,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.vaescode.springboot.app.models.entity.Cliente;
 
-@XmlRootElement(name = "clientes")
+@XmlRootElement(name = "clientesList")
 public class ClienteList {
 
 	@XmlElement(name = "cliente")
 	public List<Cliente> clientes;
 
-	public ClienteList(List<Cliente> clientes) {
-
-		this.clientes = clientes;
+	public ClienteList() {
 	}
 
-	public ClienteList() {
-
+	public ClienteList(List<Cliente> clientes) {
+		this.clientes = clientes;
 	}
 
 	public List<Cliente> getClientes() {
 		return clientes;
 	}
-
 }

@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "facturas")
@@ -27,25 +28,25 @@ public class Factura implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
-	
+	private Long id;
+
 	@NotEmpty
-	public String descripcion;
-	
-	public String observacion;
+	private String descripcion;
+
+	private String observacion;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")
-	public Date createAt;
+	private Date createAt;
 
 	// Relación: muchas facturas - un cliente -> carga lenta()
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="cliente_id")
-	public Cliente cliente;
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "factura_id")
-	public List<ItemFactura> items;
+	private List<ItemFactura> items;
 
 	// Constructor
 	public Factura() {
@@ -56,7 +57,6 @@ public class Factura implements Serializable {
 	public void prePersist() {
 		this.createAt = new Date();
 	}
-	
 
 	public Long getId() {
 		return id;
@@ -90,6 +90,7 @@ public class Factura implements Serializable {
 		this.createAt = createAt;
 	}
 
+	@XmlTransient // Cuando se serializa, no se llama a este método
 	public Cliente getCliente() {
 		return cliente;
 	}
