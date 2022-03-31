@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -41,7 +42,8 @@ public class MvcConfig implements WebMvcConfigurer {
 		return new BCryptPasswordEncoder();
 	}
 
-	// Donde guardar el parametro de nuestro locale/lenguaje Guardar en sesion el lenguaje
+	// Donde guardar el parametro de nuestro locale/lenguaje Guardar en sesion el
+	// lenguaje
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
@@ -50,7 +52,8 @@ public class MvcConfig implements WebMvcConfigurer {
 		return localeResolver;
 	}
 
-	// Interceptor para cambiar el locale para modificar el idioma de la app añ ásar el parametro por url 
+	// Interceptor para cambiar el locale para modificar el idioma de la app añ ásar
+	// el parametro por url
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localInterceptor = new LocaleChangeInterceptor();
@@ -62,6 +65,14 @@ public class MvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
+	}
+
+	// Método que se encarga de serializar
+	@Bean
+	public Jaxb2Marshaller jaxb2Marshaller() {
+		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+		marshaller.setClassesToBeBound(new Class[] { com.vaescode.springboot.app.models.entity.Cliente.class });
+		return marshaller;
 	}
 
 }
