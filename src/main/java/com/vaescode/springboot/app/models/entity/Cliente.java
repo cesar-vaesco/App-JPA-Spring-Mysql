@@ -22,7 +22,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "clientes")
@@ -46,6 +47,7 @@ public class Cliente implements Serializable {
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE) // Como se guarda la fecha en la base de datos
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createAt;
 
 	private String foto;
@@ -53,7 +55,7 @@ public class Cliente implements Serializable {
 	// factuaras mapeadas a cliente - relación: un cliente a muchas facturas - carga
 	// lenta - afectar las operaciones relacionadas al campo
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private List<Factura> facturas;
 
 	// Constructor
@@ -123,7 +125,7 @@ public class Cliente implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Cliente: " + nombre + " " + apellido ;
+		return "Cliente: " + nombre + " " + apellido;
 	}
 
 	private static final long serialVersionUID = 1L;

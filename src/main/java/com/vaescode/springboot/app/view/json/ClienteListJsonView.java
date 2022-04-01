@@ -20,6 +20,7 @@ public class ClienteListJsonView extends MappingJackson2JsonView {
 		model.remove("page");
 
 		// Remover la páginación para que no se muestre el json
+		@SuppressWarnings("unchecked")
 		Page<Cliente> clientes = (Page<Cliente>) model.get("clientes");
 		model.remove("clientes");
 		model.put("clientes", clientes.getContent());

@@ -15,21 +15,22 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "productos")
+//@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Producto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nombre;
-	
+
 	private Double precio;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")
 	private Date createAt;
-	
-	@PrePersist 
+
+	@PrePersist
 	public void prePersist() {
 		this.createAt = new Date();
 	}
