@@ -22,6 +22,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "clientes")
 public class Cliente implements Serializable {
@@ -51,6 +53,7 @@ public class Cliente implements Serializable {
 	// factuaras mapeadas a cliente - relación: un cliente a muchas facturas - carga
 	// lenta - afectar las operaciones relacionadas al campo
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Factura> facturas;
 
 	// Constructor
