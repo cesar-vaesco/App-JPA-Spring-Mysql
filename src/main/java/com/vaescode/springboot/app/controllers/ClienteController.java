@@ -3,6 +3,7 @@ package com.vaescode.springboot.app.controllers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -101,7 +102,8 @@ public class ClienteController {
 	/* listar */
 	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
-			Authentication authentication, HttpServletRequest request, Locale locale) {
+			@RequestParam(name = "format", defaultValue = "html") String format, Authentication authentication,
+			HttpServletRequest request, Locale locale) {
 
 		if (authentication != null) {
 			logger.info("Hola usuario authenticado, tu nombre es: ".concat(authentication.getName()));
@@ -140,18 +142,25 @@ public class ClienteController {
 			logger.info("Forma usando HttpServletRequest: Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
 		}
 
-		Pageable pageRequest = PageRequest.of(page, 4); // cantidad registros a mostrar por página
+	
 
-		Page<Cliente> clientes = clienteService.findAll(pageRequest);// Obtenemos la lista página de registros
-
-		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
-
-		model.addAttribute("titulo", messageSource.getMessage("text.cliente.listar.titulo", null, locale));
-		model.addAttribute("clientes", clientes); // pasar lista a la vista
-		model.addAttribute("page", pageRender); // pasar paginación a la vista
+		if (format.equals("json") || format.equals("xml")) {
+			List<Cliente> clientes = clienteService.findAll();
+			model.addAttribute("clientes", clientes);
+		} else {
+			Pageable pageRequest = PageRequest.of(page, 4);
+			//List<CommentEntity> entity = service.getAllCommentByArticleId(article_id.get());
+			Page<Cliente> clientes = clienteService.findAll(pageRequest);
+			PageRender<Cliente> pageRender = new PageRender<Cliente>("/listar", clientes);
+			model.addAttribute("clientes", clientes);
+			model.addAttribute("page", pageRender);
+			model.addAttribute("titulo", "Listado de Clientes");
+		}
 
 		return "listar";
 	}
+	
+	
 
 	/* crear registro de cliente */
 	@Secured("ROLE_ADMIN")

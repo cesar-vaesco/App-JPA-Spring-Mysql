@@ -1,8 +1,10 @@
 package com.vaescode.springboot.app.view.json;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -21,7 +23,10 @@ public class ClienteListJsonView extends MappingJackson2JsonView {
 
 		// Remover la páginación para que no se muestre el json
 		@SuppressWarnings("unchecked")
-		Page<Cliente> clientes = (Page<Cliente>) model.get("clientes");
+		//Mostrar todos los registrps en formato json
+		Page<Cliente> clientes = new PageImpl<Cliente>((List<Cliente>) model.get("clientes"));
+		// -> mostrar primeros registros Page<Cliente> clientes = (Page<Cliente>) model.get("clientes");
+		
 		model.remove("clientes");
 		model.put("clientes", clientes.getContent());
 
