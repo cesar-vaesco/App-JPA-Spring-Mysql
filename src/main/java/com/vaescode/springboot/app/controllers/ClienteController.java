@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,7 @@ import com.vaescode.springboot.app.models.entity.Cliente;
 import com.vaescode.springboot.app.models.service.IClienteService;
 import com.vaescode.springboot.app.models.service.IUploadFileService;
 import com.vaescode.springboot.app.util.paginator.PageRender;
+import com.vaescode.springboot.app.view.xml.ClienteList;
 
 @Controller
 @SessionAttributes("cliente")
@@ -99,6 +101,25 @@ public class ClienteController {
 		return "ver";
 	}
 
+	/*
+	 * http://localhost:8080/listar-rest
+	 */
+	@GetMapping(value = "/listar-rest")
+	public @ResponseBody List<Cliente> listarRest() {
+
+		return clienteService.findAll();
+	}
+
+	/*
+	 * Método que responde en formato Json y xml
+	 * http://localhost:8080/listar-rest-xml?format=json
+	 * http://localhost:8080/listar-rest-xml?format=xml
+	 */
+	@GetMapping(value = "/listar-rest-xml")
+	public @ResponseBody ClienteList listarRestXml() {
+		return new ClienteList(clienteService.findAll());
+	}
+
 	/* listar */
 	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
@@ -142,25 +163,17 @@ public class ClienteController {
 			logger.info("Forma usando HttpServletRequest: Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
 		}
 
-	
+		Pageable pageRequest = PageRequest.of(page, 4);
 
-		if (format.equals("json") || format.equals("xml")) {
-			List<Cliente> clientes = clienteService.findAll();
-			model.addAttribute("clientes", clientes);
-		} else {
-			Pageable pageRequest = PageRequest.of(page, 4);
-			//List<CommentEntity> entity = service.getAllCommentByArticleId(article_id.get());
-			Page<Cliente> clientes = clienteService.findAll(pageRequest);
-			PageRender<Cliente> pageRender = new PageRender<Cliente>("/listar", clientes);
-			model.addAttribute("clientes", clientes);
-			model.addAttribute("page", pageRender);
-			model.addAttribute("titulo", "Listado de Clientes");
-		}
+		Page<Cliente> clientes = clienteService.findAll(pageRequest);
+
+		PageRender<Cliente> pageRender = new PageRender<Cliente>("/listar", clientes);
+		model.addAttribute("titulo", messageSource.getMessage("text.cliente.listar.titulo", null, locale));
+		model.addAttribute("clientes", clientes);
+		model.addAttribute("page", pageRender);
 
 		return "listar";
 	}
-	
-	
 
 	/* crear registro de cliente */
 	@Secured("ROLE_ADMIN")
