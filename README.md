@@ -26,9 +26,9 @@
 - Después de lo anterior, se actualizao el proyecto con maven
 - Se debe de asegurar que la carpeta target este vacía, de no ser así, en la raíz del proyecto se ejecuta el comando maven clean - después de ejecutar el comando refrescar la carpeta
 - ServletInitializer: se requiere crear una clase en la raíz del proyecto, la cual va tener como función indicarle al servidor externo cual es la clase que arranca nuestra aplicación 
-- mavin install: se empaqueta nuestra aplicación 
+- maven install: se empaqueta nuestra aplicación 
 
-![mvaen-clean](src/main/resources/static/images/maven-clean.png)
+![maven-clean](src/main/resources/static/images/maven-clean.png)
 
 ```
 <groupId>com.vaescode.springboot.tomcat.app</groupId>
@@ -44,7 +44,30 @@
 		<scope>provided</scope>
 </dependency>
 ``` 		
--
+```
 
+## Despliegue de aplicación en tomcat externo
 
+### Inicializar servidor tomcat externo
 
+- Dirigirse al directorio donde se tiene descargado y descomprimido tomcat
+- Ingresar a la carpeta bin
+- Dentro de la carpeta bin ejecutar el comando  " .\startup.bat " 
+	- Esto inicializa el servidor abriendo una terminal en la cúal se identifica su ejecución	
+	![webapp](src/main/resources/static/images/inicializar-tomcat-externo.png)	
+	
+	
+### Despliegue de aplicación
+- Mover nuestro archivo war de la aplicación al directori0 webapp de tomcat y lo copiamos. En automatico y con tomcat levantado nuestra aplicación se desplegara
+	![webapp](src/main/resources/static/images/guardar-app-tomcat.png)	
+- Revisamos en el navegador nuestro proyecto, hay que estar atentos a la ruta, ya que tomcat desplegra el proyecto con el nombre del proyecto, el cual se genero al empquetar el proyecto: spring-boot-tomcat-0.0.1-SNAPSHOT
+	![webapp](src/main/resources/static/images/revisar-navegador.png)
+- Se puede renombrar el proyecto
+	![webapp](src/main/resources/static/images/renombrar-proyecto.png)	
+
+	
+	
+	
+	
+	
+	
