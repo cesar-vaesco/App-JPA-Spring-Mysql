@@ -65,9 +65,16 @@
 - Se puede renombrar el proyecto
 	![webapp](src/main/resources/static/images/renombrar-proyecto.png)	
 
-	
-	
-	
-	
+
+### Pasos de despliegue
+
+- Levantar servidor con .\startup.bat en línea de comandos
+- Mover archivo war desplegado a el directorio webapp de Tomcat
+- Se puede renombrar el archivo war desplegado 	
+- Apagar el servidor con ./shutdown.bat	en línea de comandos donde se levanto el servidor
+
+#### Actualización en proyecto WAR para hacer funcionar el AJAX --> 
+- funcionalidad del autocompletado en la vista factura
+![webapp](src/main/resources/static/images/cambiar-autocompletado.png)	
 	
 	
